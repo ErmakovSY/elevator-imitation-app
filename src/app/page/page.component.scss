@@ -1,8 +1,15 @@
 :host {
   .container {
     height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 30px;
 
     .title {
+      font-size: 24px;
+      font-weight: 700;
       text-transform: uppercase;
     }
   }
