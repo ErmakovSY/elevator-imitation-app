@@ -2,13 +2,15 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
-import { ImitationModule } from './imitation/imitation.module';
+import { AppRoutingModule } from './app-routing.module';
+import { StartPageModule } from './start-page/start-page.module';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
     CoreModule,
-    ImitationModule,
+    AppRoutingModule,
+    StartPageModule,
   ],
   bootstrap: [AppComponent]
 })
