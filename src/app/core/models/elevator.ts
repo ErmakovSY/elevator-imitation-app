@@ -7,7 +7,7 @@ import { ElevatorDoorStatus } from '../types/elevator/elevator-door-status';
 export class Elevator implements IElevator {
 
   capacity: number;
-  passengers: number;
+  passengers = 0;
   freePlaces: number;
   status: ElevatorStatus;
   doorStatus: ElevatorDoorStatus;
@@ -16,6 +16,7 @@ export class Elevator implements IElevator {
 
   constructor({ capacity }) {
     this.capacity = capacity;
+    this.freePlaces = capacity;
     this.status = ElevatorStatus.WAITING;
   }
 
