@@ -19,7 +19,7 @@ export class ImitationComponent implements OnInit {
 
   ngOnInit() {
     this.floors$ = this.imitationService.imitationModel$.pipe(
-      map((imitationModel) => imitationModel.floors)
+      map((imitationModel) => imitationModel.floors.reverse())
     );
   }
 
