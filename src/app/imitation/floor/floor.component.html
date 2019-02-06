@@ -1,5 +1,9 @@
 <div class="floor">
-  <div class="area residents"></div>
-  <div class="area waiting"></div>
+  <div class="area residents">
+    {{ (residentsOnResidenceFloor$ | async).length }}
+  </div>
+  <div class="area waiting">
+    {{ (residentsWaiting$ | async).length }}
+  </div>
   <div class="area elevator"></div>
 </div>
