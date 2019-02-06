@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 
 import * as config from './../../config.json';
 import { destroySubscribers } from '../shared/utils';
+import { ImitationService } from '../core/services/imitation.service';
 
 @Component({
   selector: 'app-start-page',
@@ -31,7 +32,10 @@ export class StartPageComponent implements OnInit, OnDestroy {
     return this.form.controls['floors'] as FormArray;
   }
 
-  constructor(private router: Router) { }
+  constructor(
+    private router: Router,
+    private imitationService: ImitationService,
+  ) { }
 
   ngOnInit() {
     this.initForm();
@@ -41,6 +45,9 @@ export class StartPageComponent implements OnInit, OnDestroy {
 
     this.subscribers.elevatorCountChange = this.elevatorCount.valueChanges
       .subscribe((elevatorCount: number) => this.updateElevatorsCount(elevatorCount));
+
+    this.subscribers.imitationModelReady = this.imitationService.imitationModel$
+      .subscribe(() => this.router.navigate(['imitation']));
   }
 
   ngOnDestroy() {
@@ -48,7 +55,7 @@ export class StartPageComponent implements OnInit, OnDestroy {
   }
 
   runImitation() {
-    this.router.navigate(['imitation']);
+    this.imitationService.initModel$.next(this.form.value);
   }
 
   private initForm() {
@@ -59,7 +66,7 @@ export class StartPageComponent implements OnInit, OnDestroy {
     }
 
     for (let i = 1; i <= config.default.flour.count; i++) {
-      this.floors.push(this.createFloorForm());
+      this.floors.push(this.createFloorForm(i));
     }
   }
 
@@ -79,8 +86,9 @@ export class StartPageComponent implements OnInit, OnDestroy {
     });
   }
 
-  private createFloorForm() {
+  private createFloorForm(floorNumber) {
     return new FormGroup({
+      number: new FormControl(floorNumber),
       residents: new FormControl(20)
     });
   }
@@ -88,7 +96,7 @@ export class StartPageComponent implements OnInit, OnDestroy {
   private updateFloorsCount(count: number) {
     while (this.floors.length !== count) {
       if (count > this.floors.length) {
-        this.floors.push(this.createFloorForm());
+        this.floors.push(this.createFloorForm(this.floors.length));
       } else {
         this.floors.removeAt(this.floors.length - 1);
       }
