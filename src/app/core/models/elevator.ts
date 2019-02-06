@@ -12,6 +12,7 @@ export class Elevator implements IElevator {
   status: ElevatorStatus;
   doorStatus: ElevatorDoorStatus;
   targetFloors: number[] = [];
+  currentFloor = 1;
 
   constructor({ capacity }) {
     this.capacity = capacity;

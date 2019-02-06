@@ -8,4 +8,5 @@ export interface IElevator {
   status: ElevatorStatus;
   doorStatus: ElevatorDoorStatus;
   targetFloors: number[];
+  currentFloor: number;
 }
