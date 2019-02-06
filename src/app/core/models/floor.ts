@@ -1,15 +1,17 @@
 import { IFloor } from '../interfaces/floor.interface';
+import { IResident } from '../interfaces/resident.interface';
+import { Resident } from './resident';
 
 export class Floor implements IFloor {
 
   number: number;
-  residents: number;
+  residents: IResident[];
   residentsWaiting: number;
   isElevatorCalled = false;
 
   constructor({ number, residents }) {
     this.number = number;
-    this.residents = residents;
+    this.residents = this.populateResidents(residents);
   }
 
   updateResidentsWaiting(value: number): void {
@@ -18,5 +20,13 @@ export class Floor implements IFloor {
 
   updateElevatorCalled(value: boolean): void {
     this.isElevatorCalled = value;
+  }
+
+  private populateResidents(count) {
+    const residents = [];
+    for (let i = 1; i !== count; i++) {
+      residents.push(new Resident(this.number));
+    }
+    return residents;
   }
 }
