@@ -2,6 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 
+import { take } from 'rxjs/operators';
+
 import * as config from './../../config.json';
 import { destroySubscribers } from '../shared/utils';
 import { ImitationService } from '../core/services/imitation.service';
@@ -45,9 +47,6 @@ export class StartPageComponent implements OnInit, OnDestroy {
 
     this.subscribers.elevatorCountChange = this.elevatorCount.valueChanges
       .subscribe((elevatorCount: number) => this.updateElevatorsCount(elevatorCount));
-
-    this.subscribers.imitationModelReady = this.imitationService.imitationModel$
-      .subscribe(() => this.router.navigate(['imitation']));
   }
 
   ngOnDestroy() {
@@ -56,6 +55,7 @@ export class StartPageComponent implements OnInit, OnDestroy {
 
   runImitation() {
     this.imitationService.initModel$.next(this.form.value);
+    this.router.navigate(['imitation']);
   }
 
   private initForm() {
