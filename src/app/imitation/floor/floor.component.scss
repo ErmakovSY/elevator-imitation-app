@@ -6,6 +6,9 @@
 
   .area {
     height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border-color: black;
     border-style: solid;
     border-width: 1px;
@@ -20,9 +23,19 @@
       border-left: none;
     }
 
-    &.elevator {
+    &.elevation {
       width: 20%;
       border-left: none;
+
+      .elevator {
+        width: 30%;
+        height: 80%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 10px;
+        border: 1px solid black;
+      }
     }
   }
 }

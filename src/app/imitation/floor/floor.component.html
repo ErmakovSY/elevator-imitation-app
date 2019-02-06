@@ -5,5 +5,9 @@
   <div class="area waiting">
     {{ (residentsWaiting$ | async).length }}
   </div>
-  <div class="area elevator"></div>
+  <div class="area elevation">
+    <div class="elevator" *ngFor="let elevator of elevatorsOnFloor$ | async">
+      {{ elevator.passengers }}
+    </div>
+  </div>
 </div>

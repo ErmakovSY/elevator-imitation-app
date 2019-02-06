@@ -7,6 +7,7 @@ import { IFloor } from '../../core/interfaces/floor.interface';
 import { IResident } from '../../core/interfaces/resident.interface';
 import { ImitationService } from '../../core/services/imitation.service';
 import { ResidentStatus } from '../../core/types/resident/resident-status';
+import { IElevator } from '../../core/interfaces/elevator.interface';
 
 @Component({
   selector: 'app-floor',
@@ -18,6 +19,8 @@ export class FloorComponent implements OnInit {
   residents$: Observable<IResident[]>;
   residentsOnResidenceFloor$: Observable<IResident[]>;
   residentsWaiting$: Observable<IResident[]>;
+
+  elevatorsOnFloor$: Observable<IElevator[]>;
 
   @Input() floor: IFloor;
 
@@ -40,6 +43,12 @@ export class FloorComponent implements OnInit {
     this.residentsWaiting$ = this.residents$.pipe(
       map((residents) =>
         residents.filter(resident => resident.status === ResidentStatus.WAITING)
+      )
+    );
+
+    this.elevatorsOnFloor$ = this.imitationService.imitationModel$.pipe(
+      map((imitationModel) =>
+        imitationModel.elevators.filter(e => e.currentFloor === this.floor.number)
       )
     );
   }
