@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -11,7 +11,7 @@ import { IFloor } from '../core/interfaces/floor.interface';
   templateUrl: './imitation.component.html',
   styleUrls: ['./imitation.component.scss']
 })
-export class ImitationComponent implements OnInit {
+export class ImitationComponent implements OnInit, OnDestroy {
 
   floors$: Observable<IFloor[]>;
 
@@ -21,6 +21,14 @@ export class ImitationComponent implements OnInit {
     this.floors$ = this.imitationService.imitationModel$.pipe(
       map((imitationModel) => imitationModel.floors.reverse())
     );
+  }
+
+  ngOnDestroy() {
+    this.imitationService.runModel$.next(false);
+  }
+
+  runModel() {
+    this.imitationService.runModel$.next(true);
   }
 
 }
