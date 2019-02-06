@@ -1,8 +1,13 @@
 <div class="container">
   <div class="title">Imitation</div>
 
-  <app-floor
-    *ngFor="let floor of floors$ | async"
-    [floor]="floor"
-  ></app-floor>
+  <div class="house">
+    <div class="roof"></div>
+    <div class="floors">
+      <app-floor
+        *ngFor="let floor of floors$ | async"
+        [floor]="floor"
+      ></app-floor>
+    </div>
+  </div>
 </div>
