@@ -15,6 +15,10 @@ export class Imitation implements ImitationOptions {
     this.elevators = this.populateElevators(elevators);
   }
 
+  run() {
+    console.log('run');
+  }
+
   private populateFloors(floors) {
     if (floors && floors.length) {
       return floors.map(floor => new Floor(floor));
