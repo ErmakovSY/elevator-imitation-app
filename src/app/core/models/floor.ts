@@ -24,7 +24,7 @@ export class Floor implements IFloor {
 
   private populateResidents(count) {
     const residents = [];
-    for (let i = 1; i !== count; i++) {
+    for (let i = 0; i !== count; i++) {
       residents.push(new Resident(this.number));
     }
     return residents;
