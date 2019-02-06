@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 
 import * as config from './../../config.json';
 import { destroySubscribers } from '../shared/utils';
@@ -30,7 +31,7 @@ export class StartPageComponent implements OnInit, OnDestroy {
     return this.form.controls['floors'] as FormArray;
   }
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
     this.initForm();
@@ -44,6 +45,10 @@ export class StartPageComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     destroySubscribers(this.subscribers);
+  }
+
+  runImitation() {
+    this.router.navigate(['imitation']);
   }
 
   private initForm() {
