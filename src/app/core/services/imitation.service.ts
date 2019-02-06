@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { Observable, Subject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, shareReplay } from 'rxjs/operators';
 
 import { ImitationOptions } from '../interfaces/imitation-options.interface';
 import { Imitation } from '../models/imitation';
@@ -17,6 +17,7 @@ export class ImitationService {
   constructor() {
     this.imitationModel$ = this.initModel$.pipe(
       map((options) => new Imitation(options)),
+      shareReplay(1)
     );
   }
 }
