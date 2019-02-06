@@ -37,6 +37,9 @@ export class StartPageComponent implements OnInit, OnDestroy {
 
     this.subscribers.floorCountChange = this.floorCount.valueChanges
       .subscribe((floorCount: number) => this.updateFloorsCount(floorCount));
+
+    this.subscribers.elevatorCountChange = this.elevatorCount.valueChanges
+      .subscribe((elevatorCount: number) => this.updateElevatorsCount(elevatorCount));
   }
 
   ngOnDestroy() {
@@ -83,6 +86,16 @@ export class StartPageComponent implements OnInit, OnDestroy {
         this.floors.push(this.createFloorForm());
       } else {
         this.floors.removeAt(this.floors.length - 1);
+      }
+    }
+  }
+
+  private updateElevatorsCount(count: number) {
+    while (this.elevators.length !== count) {
+      if (count > this.elevators.length) {
+        this.elevators.push(this.createElevatorForm());
+      } else {
+        this.elevators.removeAt(this.elevators.length - 1);
       }
     }
   }
