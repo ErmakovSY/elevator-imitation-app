@@ -4,7 +4,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { StartPageComponent } from './start-page/start-page.component';
 
 const routes: Routes = [
-  { path: '', component: StartPageComponent }
+  { path: '', component: StartPageComponent },
+  { path: 'imitation', loadChildren: './imitation/imitation.module#ImitationModule' }
 ];
 
 @NgModule({
