@@ -1,3 +1,53 @@
-<p>
-  start-page works!
-</p>
+<h1 class="page-title">Options</h1>
+<section class="options">
+  <form [formGroup]="form">
+    <mat-card class="floors">
+      <mat-card-content>
+        <h2 class="card-title">Floor count</h2>
+        <mat-slider max="50" min="1" step="1" thumbLabel
+          [formControl]="floorCount"
+          [value]="floorCount.value"
+        ></mat-slider>
+        <input type="text" matInput
+          [formControl]="floorCount"
+          [value]="floorCount.value"
+        >
+      </mat-card-content>
+      <mat-card-actions *ngFor="let floor of floors.controls; let i = index">
+        <h3 class="page-subtitle">Floor №{{ i + 1 }} Residents count</h3>
+        <mat-slider max="50" min="1" step="1" thumbLabel
+          [formControl]="floor.controls.residents"
+          [value]="floor.value.residents"
+        ></mat-slider>
+        <input type="text" matInput
+          [formControl]="floor.controls.residents"
+          [value]="floor.value.residents"
+        >
+      </mat-card-actions>
+    </mat-card>
+    <mat-card class="elevators">
+      <mat-card-content>
+        <h2 class="card-title">Elevators count</h2>
+        <mat-slider max="3" min="1" step="1" thumbLabel
+          [formControl]="elevatorCount"
+          [value]="elevatorCount.value"
+        ></mat-slider>
+        <input type="text" matInput
+          [formControl]="elevatorCount"
+          [value]="elevatorCount.value"
+        >
+      </mat-card-content>
+      <mat-card-actions *ngFor="let elevator of elevators.controls; let i = index">
+        <h3 class="page-subtitle">Elevator №{{ i + 1 }} capacity</h3>
+        <mat-slider max="50" min="1" step="1" thumbLabel
+          [formControl]="elevator.controls.capacity"
+          [value]="elevator.value.capacity"
+        ></mat-slider>
+        <input type="text" matInput
+          [formControl]="elevator.controls.capacity"
+          [value]="elevator.value.capacity"
+        >
+      </mat-card-actions>
+    </mat-card>
+  </form>
+</section>
