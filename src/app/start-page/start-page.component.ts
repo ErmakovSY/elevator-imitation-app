@@ -1,14 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 
 import * as config from './../../config.json';
+import { destroySubscribers } from '../shared/utils';
 
 @Component({
   selector: 'app-start-page',
   templateUrl: './start-page.component.html',
   styleUrls: ['./start-page.component.scss']
 })
-export class StartPageComponent implements OnInit {
+export class StartPageComponent implements OnInit, OnDestroy {
 
   form: FormGroup;
   subscribers: any = {};
@@ -35,9 +36,11 @@ export class StartPageComponent implements OnInit {
     this.initForm();
 
     this.subscribers.floorCountChange = this.floorCount.valueChanges
-      .subscribe((floorCount: number) => {
+      .subscribe((floorCount: number) => this.updateFloorsCount(floorCount));
+  }
 
-      });
+  ngOnDestroy() {
+    destroySubscribers(this.subscribers);
   }
 
   private initForm() {
@@ -72,6 +75,16 @@ export class StartPageComponent implements OnInit {
     return new FormGroup({
       residents: new FormControl(20)
     });
+  }
+
+  private updateFloorsCount(count: number) {
+    while (this.floors.length !== count) {
+      if (count > this.floors.length) {
+        this.floors.push(this.createFloorForm());
+      } else {
+        this.floors.removeAt(this.floors.length - 1);
+      }
+    }
   }
 
 }
