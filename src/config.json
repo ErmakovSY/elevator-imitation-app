@@ -1,0 +1,13 @@
+{
+  "flour": {
+    "count": 9,
+    "residentsPerFlour": 20
+  },
+  "resident": {
+
+  },
+  "elevator": {
+    "count": 1,
+    "capacity": 5
+  }
+}
