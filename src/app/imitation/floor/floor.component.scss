@@ -1,0 +1,28 @@
+.floor {
+  height: 100px;
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+
+  .area {
+    height: 100%;
+    border-color: black;
+    border-style: solid;
+    border-width: 1px;
+    border-top-width: 0;
+
+    &.residents {
+      width: 60%;
+    }
+
+    &.waiting {
+      width: 20%;
+      border-left: none;
+    }
+
+    &.elevator {
+      width: 20%;
+      border-left: none;
+    }
+  }
+}

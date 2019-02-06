@@ -14,6 +14,7 @@ export class FloorComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+
   }
 
 }
