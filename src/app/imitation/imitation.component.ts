@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+import { ImitationService } from '../core/services/imitation.service';
+import { IFloor } from '../core/interfaces/floor.interface';
+
 @Component({
   selector: 'app-imitation',
   templateUrl: './imitation.component.html',
@@ -7,9 +13,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ImitationComponent implements OnInit {
 
-  constructor() { }
+  floors$: Observable<IFloor[]>;
+
+  constructor(private imitationService: ImitationService) { }
 
   ngOnInit() {
+    this.floors$ = this.imitationService.imitationModel$.pipe(
+      map((imitationModel) => imitationModel.floors)
+    );
   }
 
 }

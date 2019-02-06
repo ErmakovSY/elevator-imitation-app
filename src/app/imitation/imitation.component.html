@@ -1,3 +1,8 @@
 <div class="container">
-  <div class="title">Elevator</div>
+  <div class="title">Imitation</div>
+
+  <app-floor
+    *ngFor="let floor of floors$ | async"
+    [floor]="floor"
+  ></app-floor>
 </div>
