@@ -7,7 +7,7 @@ export class Floor implements IFloor {
   residentsWaiting: number;
   isElevatorCalled = false;
 
-  constructor(number: number, residents: number) {
+  constructor({ number, residents }) {
     this.number = number;
     this.residents = residents;
   }
