@@ -4,4 +4,5 @@ export interface IResident {
   residenceFloor: number;
   targetFloor: number;
   status: ResidentStatus;
+  triggerResidentEvent(): void;
 }
