@@ -19,3 +19,10 @@ export function getRandomValue(value: number, delta: number): number {
   const max = Math.floor(value + delta);
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+
+/**
+ * Returns a random integer between min and max
+ */
+export function getRandomValueInRange(min: number, max: number): number {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
