@@ -3,21 +3,24 @@ import { IElevator } from '../interfaces/elevator.interface';
 import { IFloor } from '../interfaces/floor.interface';
 
 import { Observable, of, Subject } from 'rxjs';
-import { delay, mergeMap, repeat, share, switchMapTo } from 'rxjs/operators';
+import { delay, map, mergeMap, repeat, share, switchMapTo, tap } from 'rxjs/operators';
 
 import * as config from '../../../config.json';
-import { getRandomValue } from '../../shared/utils';
+import { getRandomValue, getRandomValueInRange } from '../../shared/utils';
 
 import { Floor } from './floor';
 import { Elevator } from './elevator';
+import { IResident } from '../interfaces/resident.interface';
 
 export class Imitation implements ImitationOptions {
 
   elevators: IElevator[];
   floors: IFloor[];
 
-  ticks$: Observable<any>;
+  ticks$: Observable<null>;
   triggerTickGeneration$: Subject<null> = new Subject();
+
+  residentsEvents$: Observable<any>;
 
   constructor({ elevators, floors }) {
     this.floors = this.populateFloors(floors);
@@ -26,11 +29,19 @@ export class Imitation implements ImitationOptions {
     this.ticks$ = this.triggerTickGeneration$.pipe(
       switchMapTo(of(null).pipe(
         mergeMap(() => of(null).pipe(
-          delay(getRandomValue(config['tickTime'], config['tickTimeDelta']))
+          delay(getRandomValue(config.default.tickTime, config.default.tickTimeDelta))
         )),
         repeat(),
         share()
       ))
+    );
+
+    this.residentsEvents$ = this.ticks$.pipe(
+      map(() => this.floors.reduce((acc, floor) => [...acc, ...floor.residents], [])),
+      map((residents: IResident[]) =>
+        residents[getRandomValueInRange(0, residents.length)]
+      ),
+      tap((resident: IResident) => resident.triggerResidentEvent())
     );
   }
 
