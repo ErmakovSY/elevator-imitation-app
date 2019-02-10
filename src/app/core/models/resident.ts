@@ -11,11 +11,40 @@ export class Resident implements IResident {
     this.residenceFloor = residenceFloor;
   }
 
-  updateTargetFloor(value: number): void {
+  triggerResidentEvent(): void {
+    switch (this.status) {
+      case ResidentStatus.ON_RESIDENCE_FLOOR: {
+        this.updateTargetFloor(1)
+        this.updateStatus(ResidentStatus.WAITING);
+        break;
+      }
+      case ResidentStatus.WAITING: {
+        this.updateStatus(ResidentStatus.MOVEING);
+        break;
+      }
+      case ResidentStatus.MOVEING: {
+        this.updateStatus(this.targetFloor === this.residenceFloor
+          ? ResidentStatus.ON_RESIDENCE_FLOOR
+          : ResidentStatus.ON_TARGET_FLOOR);
+        break;
+      }
+      case ResidentStatus.ON_TARGET_FLOOR: {
+        this.updateStatus(ResidentStatus.OUTSIDE);
+        break;
+      }
+      case ResidentStatus.OUTSIDE: {
+        this.updateTargetFloor(this.residenceFloor);
+        this.updateStatus(ResidentStatus.WAITING);
+        break;
+      }
+    }
+  }
+
+  private updateTargetFloor(value: number): void {
     this.targetFloor = value;
   }
 
-  updateStatus(value: ResidentStatus): void {
+  private updateStatus(value: ResidentStatus): void {
     this.status = value;
   }
 }
