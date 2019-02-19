@@ -2,8 +2,8 @@ import { ImitationOptions } from '../interfaces/imitation-options.interface';
 import { IElevator } from '../interfaces/elevator.interface';
 import { IFloor } from '../interfaces/floor.interface';
 
-import { Observable, of, Subject } from 'rxjs';
-import { delay, map, mergeMap, repeat, share, switchMapTo, tap } from 'rxjs/operators';
+import { ConnectableObservable, merge, Observable, of, Subject } from 'rxjs';
+import { delay, map, mapTo, mergeMap, publishReplay, repeat, share, switchMapTo, tap } from 'rxjs/operators';
 
 import * as config from '../../../config.json';
 import { getRandomValue, getRandomValueInRange } from '../../shared/utils';
@@ -17,10 +17,14 @@ export class Imitation implements ImitationOptions {
   elevators: IElevator[];
   floors: IFloor[];
 
+  events$: ConnectableObservable<Imitation>;
+
   ticks$: Observable<null>;
   triggerTickGeneration$: Subject<null> = new Subject();
 
   residentsEvents$: Observable<any>;
+
+  isModelRunning: boolean;
 
   constructor({ elevators, floors }) {
     this.floors = this.populateFloors(floors);
@@ -43,15 +47,24 @@ export class Imitation implements ImitationOptions {
       ),
       tap((resident: IResident) => resident.triggerResidentEvent())
     );
+
+    this.events$ = merge(
+      this.residentsEvents$
+    ).pipe(
+      mapTo(this),
+      publishReplay(1)
+    ) as ConnectableObservable<Imitation>;
+    this.events$.connect();
   }
 
   run() {
+    this.isModelRunning = true;
     this.triggerTickGeneration$.next();
   }
 
   private populateFloors(floors) {
     if (floors && floors.length) {
-      return floors.map(floor => new Floor(floor));
+      return floors.map(floor => new Floor(floor)).reverse();
     }
     return [];
   }
