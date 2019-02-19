@@ -22,8 +22,6 @@ export class Imitation implements ImitationOptions {
   ticks$: Observable<null>;
   triggerTickGeneration$: Subject<null> = new Subject();
 
-  residentsEvents$: Observable<any>;
-
   isModelRunning: boolean;
 
   constructor({ elevators, floors }) {
@@ -40,7 +38,7 @@ export class Imitation implements ImitationOptions {
       ))
     );
 
-    this.residentsEvents$ = this.ticks$.pipe(
+    const residentsEvents$ = this.ticks$.pipe(
       map(() => this.floors.reduce((acc, floor) => [...acc, ...floor.residents], [])),
       map((residents: IResident[]) =>
         residents[getRandomValueInRange(0, residents.length)]
@@ -49,7 +47,7 @@ export class Imitation implements ImitationOptions {
     );
 
     this.events$ = merge(
-      this.residentsEvents$
+      residentsEvents$
     ).pipe(
       mapTo(this),
       publishReplay(1)
