@@ -19,7 +19,7 @@ export class ImitationComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.floors$ = this.imitationService.imitationModel$.pipe(
-      map((imitationModel) => imitationModel.floors.reverse())
+      map((imitationModel) => imitationModel.floors)
     );
   }
 
