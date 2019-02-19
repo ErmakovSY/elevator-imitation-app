@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 
 import { IFloor } from '../../core/interfaces/floor.interface';
 import { IResident } from '../../core/interfaces/resident.interface';
@@ -28,27 +28,29 @@ export class FloorComponent implements OnInit {
 
   ngOnInit() {
     this.residents$ = this.imitationService.imitationModel$.pipe(
+      filter(imitationModel => !!imitationModel.floors),
       map((imitationModel) => {
         const floor = imitationModel.floors.find(f => f.number === this.floor.number);
-        return floor.residents;
-      })
+        return floor.residents || [];
+      }),
     );
 
     this.residentsOnResidenceFloor$ = this.residents$.pipe(
       map((residents) =>
-        residents.filter(resident => resident.status === ResidentStatus.ON_RESIDENCE_FLOOR)
+        residents.filter(resident => resident.status === ResidentStatus.ON_RESIDENCE_FLOOR) || []
       )
     );
 
     this.residentsWaiting$ = this.residents$.pipe(
       map((residents) =>
-        residents.filter(resident => resident.status === ResidentStatus.WAITING)
+        residents.filter(resident => resident.status === ResidentStatus.WAITING) || []
       )
     );
 
     this.elevatorsOnFloor$ = this.imitationService.imitationModel$.pipe(
+      filter(imitationModel => !!imitationModel.elevators),
       map((imitationModel) =>
-        imitationModel.elevators.filter(e => e.currentFloor === this.floor.number)
+        imitationModel.elevators.filter(e => e.currentFloor === this.floor.number) || []
       )
     );
   }

@@ -1,9 +1,13 @@
 <div class="floor">
   <div class="area residents">
-    {{ (residentsOnResidenceFloor$ | async).length }}
+    <span *ngIf="!!(residentsOnResidenceFloor$ | async)">
+      {{ (residentsOnResidenceFloor$ | async).length }}
+    </span>
   </div>
   <div class="area waiting">
-    {{ (residentsWaiting$ | async).length }}
+    <span *ngIf="residentsWaiting$ | async">
+      {{ (residentsWaiting$ | async).length }}
+    </span>
   </div>
   <div class="area elevation">
     <div class="elevator" *ngFor="let elevator of elevatorsOnFloor$ | async">
