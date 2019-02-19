@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 
 import { combineLatest, ConnectableObservable, Subject } from 'rxjs';
-import { map, publishReplay } from 'rxjs/operators';
+import { publishReplay, scan, switchMap } from 'rxjs/operators';
 
 import { ImitationOptions } from '../interfaces/imitation-options.interface';
 import { Imitation } from '../models/imitation';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
+import { of } from 'rxjs/internal/observable/of';
 
 @Injectable({
   providedIn: 'root'
@@ -21,14 +22,15 @@ export class ImitationService {
       this.initModel$,
       this.runModel$
     ).pipe(
-      map(([options, run]: [Imitation, boolean]) => {
-        const model = new Imitation(options);
+      scan((model: Imitation, [options, run]: [Imitation, boolean]) => {
         if (run) {
           model.run();
+          return model;
         }
-        return model;
-      }),
-        publishReplay(1)
+        return new Imitation(options);
+      }, {}),
+      switchMap((model: Imitation) => model.isModelRunning ? model.events$ : of(model)),
+      publishReplay(1)
     ) as ConnectableObservable<any>;
     this.imitationModel$.connect();
   }
