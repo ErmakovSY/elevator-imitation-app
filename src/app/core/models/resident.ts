@@ -15,12 +15,12 @@ export class Resident implements IResident {
     switch (this.status) {
       case ResidentStatus.ON_RESIDENCE_FLOOR: {
         this.updateTargetFloor(1)
-        this.updateStatus(ResidentStatus.WAITING);
+        this.updateStatus(this.residenceFloor > 1 ? ResidentStatus.WAITING : ResidentStatus.OUTSIDE);
         break;
       }
       case ResidentStatus.OUTSIDE: {
         this.updateTargetFloor(this.residenceFloor);
-        this.updateStatus(ResidentStatus.WAITING);
+        this.updateStatus(this.residenceFloor > 1 ? ResidentStatus.WAITING : ResidentStatus.ON_RESIDENCE_FLOOR);
         break;
       }
     }

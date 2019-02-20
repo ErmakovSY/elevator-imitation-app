@@ -1,10 +1,11 @@
+import { ConnectableObservable, merge, Observable, of, Subject } from 'rxjs';
+import { delay, filter, map, mapTo, mergeMap, publishReplay, repeat, scan, share, switchMapTo, tap } from 'rxjs/operators';
+
+import { sortBy, uniq } from 'lodash';
+
 import { ImitationOptions } from '../interfaces/imitation-options.interface';
 import { IElevator } from '../interfaces/elevator.interface';
 import { IFloor } from '../interfaces/floor.interface';
-
-import { ConnectableObservable, merge, Observable, of, Subject } from 'rxjs';
-import { delay, map, mapTo, mergeMap, publishReplay, repeat, share, switchMapTo, tap } from 'rxjs/operators';
-
 import * as config from '../../../config.json';
 import { getRandomValue, getRandomValueInRange } from '../../shared/utils';
 
@@ -46,8 +47,15 @@ export class Imitation implements ImitationOptions {
       tap((resident: IResident) => resident.triggerResidentEvent())
     );
 
+    const elevatorsEvents$ = residentsEvents$.pipe(
+      filter(resident => resident.residenceFloor > 1),
+      scan((calls, resident: IResident) => uniq(sortBy([...calls, resident.residenceFloor])), []),
+      tap(this.addCallsToElevator.bind(this))
+    );
+
     this.events$ = merge(
-      residentsEvents$
+      residentsEvents$,
+      elevatorsEvents$
     ).pipe(
       mapTo(this),
       publishReplay(1)
@@ -72,5 +80,10 @@ export class Imitation implements ImitationOptions {
       return elevators.map(elevator => new Elevator(elevator));
     }
     return [];
+  }
+
+  private addCallsToElevator(calls) {
+    // TODO: add logic to choose optimal elevator
+    this.elevators[0].addCallFloors(calls);
   }
 }
