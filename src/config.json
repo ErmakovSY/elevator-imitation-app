@@ -8,8 +8,9 @@
   },
   "elevator": {
     "count": 1,
-    "capacity": 5
+    "capacity": 5,
+    "speed": 500
   },
-  "tickTime": 1000,
-  "tickTimeDelta": 500
+  "tickTime": 2000,
+  "tickTimeDelta": 1000
 }
