@@ -1,5 +1,5 @@
 export enum ElevatorStatus {
   PENDING,
-  WAITING,
+  FREE,
   MOVING
 }
